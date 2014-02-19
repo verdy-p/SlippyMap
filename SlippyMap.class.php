@@ -43,7 +43,8 @@ class SlippyMap {
 	static function parse( $input, $argv ) {
 		global $wgScriptPath, $wgMapOfServiceUrl, $wgSlippyMapVersion;
 
-		wfLoadExtensionMessages( 'SlippyMap' );
+		//Not needed in MW 1.21
+		//wfLoadExtensionMessages( 'SlippyMap' );
 
 		//Receive args of the form <slippymap aaa=bbb ccc=ddd />
 		if ( isset( $argv['lat'] ) ) {
@@ -197,12 +198,12 @@ class SlippyMap {
 			$output .= "<style> .buttonsPanel .resetButtonItemInactive       { width:36px; height:19px; background-image:url('" . $wgScriptPath . "/extensions/SlippyMap/reset-button.png'); }</style>\n";
 
 			$output .= "<!-- bring in the OpenLayers javascript library -->";
-			$output .= "<script src=\"http://openstreetmap.org/openlayers/OpenLayers.js\"></script> ";
+			$output .= "<script src=\"//openstreetmap.org/openlayers/OpenLayers.js\"></script> ";
 
 			$output .= "<!-- bring in the OpenStreetMap OpenLayers layers. ";
 			$output .= "     Using this hosted file will make sure we are kept up ";
 			$output .= "     to date with any necessary changes --> ";
-			$output .= "<script src=\"http://openstreetmap.org/openlayers/OpenStreetMap.js\"></script> ";
+			$output .= "<script src=\"//openstreetmap.org/openlayers/OpenStreetMap.js\"></script> ";
 
 			$output .= '<script type="text/javascript">';
 
@@ -284,7 +285,7 @@ class SlippyMap {
 			$output .= "</script> ";
 
 			$output .= "<div style=\"width: {$width}px; height:{$height}px; border-style:solid; border-width:1px; border-color:lightgrey;\" id=\"map\">";
-			$output .= "<noscript><a href=\"http://www.openstreetmap.org/?lat=$lat&lon=$lon&zoom=$zoom\" title=\"See this map on OpenStreetMap.org\" style=\"text-decoration:none\">";
+			$output .= "<noscript><a href=\"//www.openstreetmap.org/?lat=$lat&lon=$lon&zoom=$zoom\" title=\"See this map on OpenStreetMap.org\" style=\"text-decoration:none\">";
 			$output .= "<img src=\"" . $wgMapOfServiceUrl . "lat=${lat}&long=${lon}&z=${zoom}&w=${width}&h=${height}&format=jpeg\" width=\"${width}\" height=\"${height}\" border=\"0\" alt=\"Slippy Map\"><br />";
 			$output .= '</a></noscript>';
 			$output .= '</div>';
