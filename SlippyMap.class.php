@@ -1,6 +1,3 @@
-	'slippymap_unsupportedoldcontents' => 'Old style tag syntax no longer supported in slippymap tag contents',
-	'slippymap_unsupportedkmlcontents' => 'slippymap tag has contents. Were you trying to input KML? KML support is disabled pending discussions about wiki syntax';
-
 <?php
 # OpenStreetMap SlippyMap - MediaWiki extension
 #
@@ -190,7 +187,7 @@ class SlippyMap {
 				'layer.addMarker(new OpenLayers.Marker(map.initLonLat,icon));';
 				'map.addLayer(layer);';
 		$output .=
-				var lonLat=new OpenLayers.LonLat(' . $lon ',' . $lat ').transform(epsg4326,map.getProjectionObject()),' .
+				'var lonLat=new OpenLayers.LonLat(' . $lon ',' . $lat ').transform(epsg4326,map.getProjectionObject()),' .
 					'slippymap_resetPosition=function(){map.setCenter(lonLat,' . $zoom . ')},' .
 					'panel=new OpenLayers.Control.Panel({displayClass:"buttonsPanel"});' .
 				'panel.addControls([' .
