@@ -56,6 +56,9 @@ $messages['en'] = array(
 	'slippymap_button_code' => 'Get wikicode',
 	'slippymap_resetview' => 'Reset view',
 	'slippymap_license' => 'OpenStreetMap - CC-BY-SA-2.0', # do not translate or duplicate this message to other languages
+	'slippymap_unsupportedmarker' => 'marker support is disactivated on the OSM wiki pending discussions about wiki syntax',
+	'slippymap_unsupportedoldcontents' => 'Old style tag syntax no longer supported in slippymap tag contents',
+	'slippymap_unsupportedkmlcontents' => 'slippymap tag has contents. Were you trying to input KML? KML support is disabled pending discussions about wiki syntax';
 );
 
 /** Message documentation (Message documentation)
