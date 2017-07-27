@@ -75,7 +75,6 @@ class SlippyMap {
 		if ( $zoom == '' ) $error .= T( 'slippymap_zoommissing' ) . '<br/>';
 		else if ( !is_numeric( $zoom ) ) $error .= T( 'slippymap_zoomnan', htmlspecialchars( $zoom ) ) . '<br/>';
 		else if ( $zoom < 0 ) $error .= T( 'slippymap_zoomsmall', $zoom ) . '<br/>';
-		else if ( $zoom == 18 ) $error .= T( 'slippymap_zoom18', $zoom ) . '<br/>';
 		else if ( $zoom > 18 ) $error .= T( 'slippymap_zoombig', $zoom ) . '<br/>';
 
 		// Parse the supported optional parameters
