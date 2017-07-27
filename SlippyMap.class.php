@@ -47,7 +47,7 @@ class SlippyMap {
 		global $wgScriptPath, $wgMapOfServiceUrl/*, $wgSlippyMapVersion*/;
 
 		//wfLoadExtensionMessages( 'SlippyMap' );// Not needed in MW 1.21
-		static function _( $id, $a ) {
+		static function T( $id, $a ) {
 			return wfMessage( $id, $a )->text();
 		}
 
@@ -59,40 +59,40 @@ class SlippyMap {
 
 		// Parse the mandatory parameters
 		$lat = isset( $argv['lat'] ) ? $argv['lat'] : '';
-		if ( $lat == ''  ) $error .= _( 'slippymap_latmissing' ) . '<br/>';
-		else if ( !is_numeric( $lat ) ) $error .= _( 'slippymap_latnan', htmlspecialchars( $lat ) ) . '<br/>';
-		else if ( $lat < -90 ) $error .= _( 'slippymap_latsmall', $lat ) . '<br/>';
-		else if ( $lat > 90 ) $error .= _( 'slippymap_latbig', $lat ) . '<br/>';
+		if ( $lat == ''  ) $error .= T( 'slippymap_latmissing' ) . '<br/>';
+		else if ( !is_numeric( $lat ) ) $error .= T( 'slippymap_latnan', htmlspecialchars( $lat ) ) . '<br/>';
+		else if ( $lat < -90 ) $error .= T( 'slippymap_latsmall', $lat ) . '<br/>';
+		else if ( $lat > 90 ) $error .= T( 'slippymap_latbig', $lat ) . '<br/>';
 
 		$lon = isset( $argv['lon'] ) ? $argv['lon'] : '';
-		if ( $lon == ''  ) $error .= _( 'slippymap_lonmissing' ) . '<br/>';
-		else if ( !is_numeric( $lon ) ) $error .= _( 'slippymap_lonnan', htmlspecialchars( $lon ) ) . '<br/>';
-		else if ( $lon < -180 ) $error .= _( 'slippymap_lonsmall', $lon ) . '<br/>';
-		else if ( $lon > 180 ) $error .= _( 'slippymap_lonbig', $lon ) . '<br/>';
+		if ( $lon == ''  ) $error .= T( 'slippymap_lonmissing' ) . '<br/>';
+		else if ( !is_numeric( $lon ) ) $error .= T( 'slippymap_lonnan', htmlspecialchars( $lon ) ) . '<br/>';
+		else if ( $lon < -180 ) $error .= T( 'slippymap_lonsmall', $lon ) . '<br/>';
+		else if ( $lon > 180 ) $error .= T( 'slippymap_lonbig', $lon ) . '<br/>';
 
 		$zoom = isset( $argv['z'] ) ? $argv['z'] : '';
 		if ( $zoom == '' && isset( $argv['zoom'] ) ) $zoom = $argv['zoom']; // see if they used 'zoom' rather than 'z' (and allow it)
-		if ( $zoom == '' ) $error .= _( 'slippymap_zoommissing' ) . '<br/>';
-		else if ( !is_numeric( $zoom ) ) $error .= _( 'slippymap_zoomnan', htmlspecialchars( $zoom ) ) . '<br/>';
-		else if ( $zoom < 0 ) $error .= _( 'slippymap_zoomsmall', $zoom ) . '<br/>';
-		else if ( $zoom == 18 ) $error .= _( 'slippymap_zoom18', $zoom ) . '<br/>';
-		else if ( $zoom > 18 ) $error .= _( 'slippymap_zoombig', $zoom ) . '<br/>';
+		if ( $zoom == '' ) $error .= T( 'slippymap_zoommissing' ) . '<br/>';
+		else if ( !is_numeric( $zoom ) ) $error .= T( 'slippymap_zoomnan', htmlspecialchars( $zoom ) ) . '<br/>';
+		else if ( $zoom < 0 ) $error .= T( 'slippymap_zoomsmall', $zoom ) . '<br/>';
+		else if ( $zoom == 18 ) $error .= T( 'slippymap_zoom18', $zoom ) . '<br/>';
+		else if ( $zoom > 18 ) $error .= T( 'slippymap_zoombig', $zoom ) . '<br/>';
 
 		// Parse the supported optional parameters
 		// Trim off the 'px' on the end of pixel measurement numbers (ignore if present)
 		$width  = isset( $argv['w'] ) ? $argv['w'] : '';
 		if ( $width  == '' ) $width = '450';
 		else if ( substr( $width, -2 ) == 'px' ) $width = (int) substr( $width, 0, -2 );
-		if ( !is_numeric( $width ) ) $error .= _( 'slippymap_widthnan', htmlspecialchars( $width ) ) . '<br/>';
-		else if ( $width < 100 ) $error .= _( 'slippymap_widthsmall', $width ) . '<br/>';
-		else if ( $width > 1000 ) $error .= _( 'slippymap_widthbig', $width ) . '<br/>';
+		if ( !is_numeric( $width ) ) $error .= T( 'slippymap_widthnan', htmlspecialchars( $width ) ) . '<br/>';
+		else if ( $width < 100 ) $error .= T( 'slippymap_widthsmall', $width ) . '<br/>';
+		else if ( $width > 1000 ) $error .= T( 'slippymap_widthbig', $width ) . '<br/>';
 
 		$height = isset( $argv['h'] ) ? $argv['h'] : '';
 		if ( $height == '' ) $height = '320';
 		else if ( substr( $height, - 2 ) == 'px' ) $height = (int) substr( $height, 0, -2 );
-		if ( !is_numeric( $height ) ) $error .= _( 'slippymap_heightnan', htmlspecialchars( $height ) ) . '<br/>';
-		else if ( $height < 100 ) $error .= _( 'slippymap_heightsmall', $height ) . '<br/>';
-		else if ( $height > 1000 ) $error .= _( 'slippymap_heightbig', $height ) . '<br/>';
+		if ( !is_numeric( $height ) ) $error .= T( 'slippymap_heightnan', htmlspecialchars( $height ) ) . '<br/>';
+		else if ( $height < 100 ) $error .= T( 'slippymap_heightsmall', $height ) . '<br/>';
+		else if ( $height > 1000 ) $error .= T( 'slippymap_heightbig', $height ) . '<br/>';
 
 		$layer  = isset( $argv['layer'] ) ? $argv['layer'] : '';
 		if ( $layer  == '' ) $layer = 'mapnik';
@@ -103,7 +103,7 @@ class SlippyMap {
 		if ( $layer == 'mapnik' ) $layerObjectDef = 'Mapnik("Mapnik")';
 		elseif ( $layer == 'cycle' ) $layerObjectDef = 'CycleMap("OpenCycleMap")';
 		elseif ( $layer == 'transport' ) $layerObjectDef = 'TransportMap("Transport")';
-		else $error .= _( 'slippymap_invalidlayer', htmlspecialchars( $layer ) );
+		else $error .= T( 'slippymap_invalidlayer', htmlspecialchars( $layer ) );
 
 		$marker = isset( $argv['marker'] ) ? $argv['marker'] : '';
 		$marker = ( $marker != '' && $marker != '0' );
@@ -121,7 +121,7 @@ class SlippyMap {
 		$showkml = false;
 
 		if ( $error != "" ) // Something was wrong. Spew the error message and input text.
-			$output = '<span class="error">' . _( 'slippymap_maperror' ) . '<br/>' . $error . '</span>' . htmlspecialchars( $input );
+			$output = '<span class="error">' . T( 'slippymap_maperror' ) . '<br/>' . $error . '</span>' . htmlspecialchars( $input );
 		else {
 			// HTML output for the slippy map.
 			// Note that this must all be output on one line (no linefeeds)
@@ -191,17 +191,17 @@ class SlippyMap {
 						'panel=new OpenLayers.Control.Panel({displayClass:"buttonsPanel"});' .
 					'panel.addControls([' .
 						'new OpenLayers.Control.Button({' .
-							'title:"' . _( 'slippymap_resetview' ) . '",' .
+							'title:"' . T( 'slippymap_resetview' ) . '",' .
 							'displayClass:"resetButton",' .
 							'trigger:slippymap_resetPosition' .
 						'}),' .
 						'new OpenLayers.Control.Button({' .
-							'title:"' ._( 'slippymap_button_code' ) . '",' .
+							'title:"' .T( 'slippymap_button_code' ) . '",' .
 							'displayClass:"getWikiCodeButton",' .
 							'trigger:function(){' .
 								'var c=map.getCenter().transform(map.getProjectionObject(),epsg4326),'
 									's=map.getSize();' .
-								'prompt("' . _( 'slippymap_code' ) .
+								'prompt("' . T( 'slippymap_code' ) .
 									'","<slippymap layer=\\"' . $layer . '\\" z=\\"+map.getZoom()+\\"' .
 									' lat=\\"+c.lat+\\" lon=\\"+c.lon+\\" h=\\"+s.h+\\" w=\\"+s.w+\\"/>");' .
 							'}' .
