@@ -1,3 +1,6 @@
+	'slippymap_unsupportedoldcontents' => 'Old style tag syntax no longer supported in slippymap tag contents',
+	'slippymap_unsupportedkmlcontents' => 'slippymap tag has contents. Were you trying to input KML? KML support is disabled pending discussions about wiki syntax';
+
 <?php
 # OpenStreetMap SlippyMap - MediaWiki extension
 #
@@ -107,16 +110,16 @@ class SlippyMap {
 
 		$marker = isset( $argv['marker'] ) ? $argv['marker'] : '';
 		$marker = ( $marker != '' && $marker != '0' );
-		if ( $marker ) $error .= 'marker support is disactivated on the OSM wiki pending discussions about wiki syntax<br/>';
+		if ( $marker ) $error .= T( 'slippymap_unsupportedmarker' ) . '<br/>';
 		$marker = false;
 
 		// Parse the optional contents
 		$input = trim($input);
 		if ( $input != '' ) {
 			if (strpos($input, '|') !== false)
-				$error .= 'Old style tag syntax no longer supported in slippymap tag contents<br/>';
+				$error .= T( 'slippymap_unsupportedoldcontents' ) . '<br/>';
 			else
-				$error .= 'slippymap tag has contents. Were you trying to input KML? KML support is disabled pending discussions about wiki syntax<br/>';
+				$error .= T( 'slippymap_unsupportedkmlcontents' ) . '<br/>';
 		}
 		$showkml = false;
 
