@@ -135,7 +135,7 @@ class SlippyMap {
 			'// Slippy map container
 			'<div id="map" style="border:1px solid #AAA;width:' . $width . 'px;height:' . $height . 'px"><noscript>' .
 				'<a href="//www.openstreetmap.org/?lat=' . $lat . '&lon=' . $lon . '&zoom=' . $zoom .
-				'" title="See this map on OpenStreetMap.org" style="text-decoration:none">' .
+				'" title="' . T( 'slippymap_osmtext' ) . '" style="text-decoration:none">' .
 					'<img border="0" width="' . $width . '" height="' . $height . '" src="' .
 					$wgMapOfServiceUrl . 'format=jpeg' .
 					'&lat=' . $lat . '&long=" . $lon . '&z=" . $zoom .
