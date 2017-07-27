@@ -124,106 +124,107 @@ class SlippyMap {
 		$showkml = false;
 
 		if ( $error != "" ) // Something was wrong. Spew the error message and input text.
-			$output = '<span class="error">' . T( 'slippymap_maperror' ) . '<br/>' . $error . '</span>' . htmlspecialchars( $input );
-		else {
-			// HTML output for the slippy map.
-			// Note that this must all be output on one line (no linefeeds)
-			// otherwise MediaWiki adds <br/> tags, which is bad in the middle of a block of javascript.
-			// There are other ways of fixing this, but not for MediaWiki v4
-			// (See http://www.mediawiki.org/wiki/Manual:Tag_extensions#How_can_I_avoid_modification_of_my_extension.27s_HTML_output.3F)
-			$output  = 
-				// Bring in the OpenLayers javascript library (load in parallel).
-				'<script src="//openstreetmap.org/openlayers/OpenLayers.js" async></script>' .
-				'// Slippy map container
-				'<div id="map" style="border:1px solid #AAA;width:' . $width . 'px;height:' . $height . 'px"><noscript>' .
-					'<a href="//www.openstreetmap.org/?lat=' . $lat . '&lon=' . $lon . '&zoom=' . $zoom .
-					'" title="See this map on OpenStreetMap.org" style="text-decoration:none">' .
-						'<img border="0" width="' . $width . '" height="' . $height . '" src="' .
-						$wgMapOfServiceUrl . 'format=jpeg' .
-						'&lat=' . $lat . '&long=" . $lon . '&z=" . $zoom .
-						'&w=" . $width . '&h=" . $height .
-						'" alt="Slippy Map"/>' .
-					'</a>' .
-				'</noscript></div>' .
-				// Theses two scripts are defered to run orderly after DOM is parsed and after async scripts are loaded.
-				// 1. Bring in the OpenStreetMap layers defined for OpenLayers. Using this hosted file will make sure we
-				// are kept up to date with any necessary changes.
-				'<script src="//openstreetmap.org/openlayers/OpenStreetMap.js" defer></script>' .
-				// 2. Configure the slippy map in the document.
-				'<script type="text/javascript" defer>' .
-				'function slippymap_init(){' .
-					'var map=new OpenLayers.Map("map",{' .
-							'projection:"EPSG:900913",units:"meters",maxResolution:156543.0399,' .
-							'maxExtent:new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),' .
-							'controls:[' .
-								'new OpenLayers.Control.Navigation(),' .
-								// Add the zoom bar control, except if the map is too little
-								( $height > 320 ? 'new OpenLayers.Control.PanZoomBar(),'
-								: $height > 140 ? 'new OpenLayers.Control.PanZoom(),'
-								: '' ) .
-								'new OpenLayers.Control.Attribution()' .
-							']}),' .
-						'epsg4326=new OpenLayers.Projection("EPSG:4326");' .
-					'map.addLayer(new OpenLayers.Layer.OSM.' . $layerObjectDef . ');';
-			if ( $showkml )
-				$output .=
-					'var layer=new OpenLayers.Layer.Vector("Vector Layer");' .
-					'layer.addFeatures(' .
-						'new OpenLayers.Format.KML({' .
-							'internalProjection:map.baseLayer.projection,' .
-							'externalProjection:epsg4326,' .
-							'extractAttributes:true,' .
-							'extractStyles:true' .
-						'}).read(unescape(' .
-							str_replace(
-								array( '%',   "\n" , "'"  , '"'  , '<'  , '>'  , ' '   ),
-								array( '%25', '%0A', '%27', '%22', '%3C', '%3E', '%20' ),
-								$input ) .
-						')));' .
-					'map.addLayer(layer);';
-			if ( $marker )
-				$output .=
-					'var size=new OpenLayers.Size(20,34),offset=new OpenLayers.Pixel(-(size.w/2),-size.h),' .
-						'icon=new OpenLayers.Icon("http://boston.openguides.org/markers/YELLOW.png",size,offset),' .
-						'layer=new OpenLayers.Layer.Markers("Markers"),' .
-					'layer.addMarker(new OpenLayers.Marker(map.initLonLat,icon));';
-					'map.addLayer(layer);';
+			return '<span class="error">' . T( 'slippymap_maperror' ) . '<br/>' . $error . '</span>' .
+				htmlspecialchars( $input );
+
+		// HTML output for the slippy map.
+		// Note that this must all be output on one line (no linefeeds)
+		// otherwise MediaWiki adds <br/> tags, which is bad in the middle of a block of javascript.
+		// There are other ways of fixing this, but not for MediaWiki v4
+		// (See http://www.mediawiki.org/wiki/Manual:Tag_extensions#How_can_I_avoid_modification_of_my_extension.27s_HTML_output.3F)
+		$output  = 
+			// Bring in the OpenLayers javascript library (load in parallel).
+			'<script src="//openstreetmap.org/openlayers/OpenLayers.js" async></script>' .
+			'// Slippy map container
+			'<div id="map" style="border:1px solid #AAA;width:' . $width . 'px;height:' . $height . 'px"><noscript>' .
+				'<a href="//www.openstreetmap.org/?lat=' . $lat . '&lon=' . $lon . '&zoom=' . $zoom .
+				'" title="See this map on OpenStreetMap.org" style="text-decoration:none">' .
+					'<img border="0" width="' . $width . '" height="' . $height . '" src="' .
+					$wgMapOfServiceUrl . 'format=jpeg' .
+					'&lat=' . $lat . '&long=" . $lon . '&z=" . $zoom .
+					'&w=" . $width . '&h=" . $height .
+					'" alt="Slippy Map"/>' .
+				'</a>' .
+			'</noscript></div>' .
+			// Theses two scripts are defered to run orderly after DOM is parsed and after async scripts are loaded.
+			// 1. Bring in the OpenStreetMap layers defined for OpenLayers. Using this hosted file will make sure we
+			// are kept up to date with any necessary changes.
+			'<script src="//openstreetmap.org/openlayers/OpenStreetMap.js" defer></script>' .
+			// 2. Configure the slippy map in the document.
+			'<script type="text/javascript" defer>' .
+			'function slippymap_init(){' .
+				'var map=new OpenLayers.Map("map",{' .
+						'projection:"EPSG:900913",units:"meters",maxResolution:156543.0399,' .
+						'maxExtent:new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),' .
+						'controls:[' .
+							'new OpenLayers.Control.Navigation(),' .
+							// Add the zoom bar control, except if the map is too little
+							( $height > 320 ? 'new OpenLayers.Control.PanZoomBar(),'
+							: $height > 140 ? 'new OpenLayers.Control.PanZoom(),'
+							: '' ) .
+							'new OpenLayers.Control.Attribution()' .
+						']}),' .
+					'epsg4326=new OpenLayers.Projection("EPSG:4326");' .
+				'map.addLayer(new OpenLayers.Layer.OSM.' . $layerObjectDef . ');';
+		if ( $showkml )
 			$output .=
-					var lonLat=new OpenLayers.LonLat(' . $lon ',' . $lat ').transform(epsg4326,map.getProjectionObject()),' .
-						'slippymap_resetPosition=function(){map.setCenter(lonLat,' . $zoom . ')},' .
-						'panel=new OpenLayers.Control.Panel({displayClass:"buttonsPanel"});' .
-					'panel.addControls([' .
-						'new OpenLayers.Control.Button({' .
-							'title:"' . T( 'slippymap_resetview' ) . '",' .
-							'displayClass:"resetButton",' .
-							'trigger:slippymap_resetPosition' .
-						'}),' .
-						'new OpenLayers.Control.Button({' .
-							'title:"' .T( 'slippymap_button_code' ) . '",' .
-							'displayClass:"getWikiCodeButton",' .
-							'trigger:function(){' .
-								'var c=map.getCenter().transform(map.getProjectionObject(),epsg4326),'
-									's=map.getSize();' .
-								'prompt("' . T( 'slippymap_code' ) .
-									'","<slippymap layer=\\"' . $layer . '\\" z=\\"+map.getZoom()+\\"' .
-									' lat=\\"+c.lat+\\" lon=\\"+c.lon+\\" h=\\"+s.h+\\" w=\\"+s.w+\\"/>");' .
-							'}' .
-						'})' .
-					']);' .
-					'map.addControl(panel);' .
-					'slippymap_resetPosition(map);' .
-				'}' .
-				//'addOnloadHook(slippymap_init);' . // broken since MW 1.17
-				'$(window).on("load",slippymap_init)'; // now using jQuery (part of MediaWiki)
-				'</script>' .
-				//'<script type="text/javascript"></script>';
-				// This inline stylesheet defines how the two extra buttons look, and where they are positioned.
-				'<style>' .
-				'.buttonsPanel div{float:left;position:relative;margin:5px;height:19px;width:36px}' .
-				'.buttonsPanel .getWikiCodeButtonItemInactive{background-image:url("' . $wgScriptPath . '/extensions/SlippyMap/wikicode-button.png");width:36px;height:19px}' .
-				'.buttonsPanel .resetButtonItemInactive{background-image:url("' . $wgScriptPath . '/extensions/SlippyMap/reset-button.png");width:36px;height:19px}' .
-				'</style>';
-		}
+				'var layer=new OpenLayers.Layer.Vector("Vector Layer");' .
+				'layer.addFeatures(' .
+					'new OpenLayers.Format.KML({' .
+						'internalProjection:map.baseLayer.projection,' .
+						'externalProjection:epsg4326,' .
+						'extractAttributes:true,' .
+						'extractStyles:true' .
+					'}).read(unescape(' .
+						str_replace(
+							array( '%',   "\n" , "'"  , '"'  , '<'  , '>'  , ' '   ),
+							array( '%25', '%0A', '%27', '%22', '%3C', '%3E', '%20' ),
+							$input ) .
+					')));' .
+				'map.addLayer(layer);';
+		if ( $marker )
+			$output .=
+				'var size=new OpenLayers.Size(20,34),offset=new OpenLayers.Pixel(-(size.w/2),-size.h),' .
+					'icon=new OpenLayers.Icon("http://boston.openguides.org/markers/YELLOW.png",size,offset),' .
+					'layer=new OpenLayers.Layer.Markers("Markers"),' .
+				'layer.addMarker(new OpenLayers.Marker(map.initLonLat,icon));';
+				'map.addLayer(layer);';
+		$output .=
+				var lonLat=new OpenLayers.LonLat(' . $lon ',' . $lat ').transform(epsg4326,map.getProjectionObject()),' .
+					'slippymap_resetPosition=function(){map.setCenter(lonLat,' . $zoom . ')},' .
+					'panel=new OpenLayers.Control.Panel({displayClass:"buttonsPanel"});' .
+				'panel.addControls([' .
+					'new OpenLayers.Control.Button({' .
+						'title:"' . T( 'slippymap_resetview' ) . '",' .
+						'displayClass:"resetButton",' .
+						'trigger:slippymap_resetPosition' .
+					'}),' .
+					'new OpenLayers.Control.Button({' .
+						'title:"' .T( 'slippymap_button_code' ) . '",' .
+						'displayClass:"getWikiCodeButton",' .
+						'trigger:function(){' .
+							'var c=map.getCenter().transform(map.getProjectionObject(),epsg4326),'
+								's=map.getSize();' .
+							'prompt("' . T( 'slippymap_code' ) .
+								'","<slippymap layer=\\"' . $layer . '\\" z=\\"+map.getZoom()+\\"' .
+								' lat=\\"+c.lat+\\" lon=\\"+c.lon+\\" h=\\"+s.h+\\" w=\\"+s.w+\\"/>");' .
+						'}' .
+					'})' .
+				']);' .
+				'map.addControl(panel);' .
+				'slippymap_resetPosition(map);' .
+			'}' .
+			//'addOnloadHook(slippymap_init);' . // broken since MW 1.17
+			'$(window).on("load",slippymap_init)'; // now using jQuery (part of MediaWiki)
+			'</script>' .
+			// This inline stylesheet defines how the two extra buttons look, and where they are positioned.
+			'<style>' .
+			'.buttonsPanel div{float:left;position:relative;margin:5px;height:19px;width:36px}' .
+			'.buttonsPanel .resetButtonItemInactive{background-image:url("' .
+				$wgScriptPath . '/extensions/SlippyMap/reset-button.png");width:36px;height:19px}' .
+			'.buttonsPanel .getWikiCodeButtonItemInactive{background-image:url("' .
+				$wgScriptPath . '/extensions/SlippyMap/wikicode-button.png");width:36px;height:19px}' .
+			'</style>';
 		return $output;
 	}
 }
