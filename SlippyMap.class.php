@@ -209,7 +209,7 @@ class SlippyMap {
 					'})' .
 				']);' .
 				'map.addControl(panel);' .
-				'slippymap_resetPosition(map);' .
+				'slippymap_resetPosition();' .
 			'}' .
 			//'addOnloadHook(slippymap_init);' . // broken since MW 1.17
 			'$(window).on("load",slippymap_init)'; // now using jQuery (part of MediaWiki)
